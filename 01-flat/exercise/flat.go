@@ -82,6 +82,12 @@ func (idx *FlatIndex) Search(query vector.Vector, k int) ([]SearchResult, error)
 	// TODO: Implement
 	// Tasks:
 	// 1. Validate query vector
+	idx.mu.RLock()
+	defer idx.mu.RUnlock()
+	if len(idx.vectors) == 0 {
+		return []SearchResult{}, nil
+	}
+
 	if err := query.Validate(); err != nil {
 		return nil, err
 	}
@@ -98,8 +104,6 @@ func (idx *FlatIndex) Search(query vector.Vector, k int) ([]SearchResult, error)
 		return nil, errors.New("dimension mismatch")
 	}
 	// 4. Calculate distance to ALL vectors (this is brute force!)
-	idx.mu.RLock()
-	defer idx.mu.RUnlock()
 	distances := make([]SearchResult, len(idx.vectors))
 	for i, v := range idx.vectors {
 		distance, err := idx.metric(query, v)

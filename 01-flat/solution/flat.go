@@ -11,10 +11,10 @@ import (
 
 // FlatIndex implements a brute-force vector index
 type FlatIndex struct {
-	vectors   []vector.Vector  // All stored vectors
-	metric    distance.Metric  // Distance function
-	dimension int              // Vector dimension (for validation)
-	mu        sync.RWMutex     // Thread safety
+	vectors   []vector.Vector // All stored vectors
+	metric    distance.Metric // Distance function
+	dimension int             // Vector dimension (for validation)
+	mu        sync.RWMutex    // Thread safety
 }
 
 // Config holds configuration for FlatIndex
